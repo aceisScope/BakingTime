@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,9 +21,15 @@ import butterknife.ButterKnife;
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
 
     private Context mContext;
+    private OnItemClickListener mClickListener;
 
-    public RecipeAdapter(Context context) {
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public RecipeAdapter(Context context, OnItemClickListener onClickListener) {
         this.mContext = context;
+        this.mClickListener = onClickListener;
     }
 
     @Override
@@ -43,7 +50,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         return 5;
     }
 
-    public static class RecipeViewHolder extends RecyclerView.ViewHolder {
+    public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.recipe_image)
         ImageView recipeImage;
@@ -54,6 +61,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         public RecipeViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            mClickListener.onItemClick(getAdapterPosition());
         }
     }
 }
