@@ -27,7 +27,7 @@
             android:layout_alignParentBottom="true"
             android:padding="@dimen/title_padding"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorSecondaryText"
             android:textSize="20sp"
             android:textStyle="bold"
             tools:text="This is a baking recipe. I hope you will enjoy baking.It is not an easy job."
