@@ -11,13 +11,20 @@
         android:layout_margin="8dp">
 
         <TextView
+            android:id="@+id/text_ingredient"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryLight"
-            android:padding="@dimen/text_padding"
+            android:padding="@dimen/general_padding"
             tools:text="This is a baking recipe. I hope you will enjoy baking. It is not an easy job."/>
 
 
     </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recipe_details_steps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/general_padding"/>
 
 </LinearLayout>
