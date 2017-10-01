@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.binghui.binghuiliu.bakingtime.R;
 import com.binghui.binghuiliu.bakingtime.RecipeDetailActivity;
+import com.binghui.binghuiliu.bakingtime.RecipeStepActivity;
 import com.binghui.binghuiliu.bakingtime.adapters.RecipeAdapter;
 import com.binghui.binghuiliu.bakingtime.adapters.StepAdapter;
 
@@ -52,7 +53,7 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
 
     @Override
     public void onItemClick(int position) {
-        Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
+        Intent intent = new Intent(getActivity(), RecipeStepActivity.class);
         startActivity(intent);
     }
 }
