@@ -23,6 +23,7 @@ ext {
     supportLibraryVersion = '26.+'
     butterknifeVersion = '8.8.1'
     mateiralvaluesVersion = '1.1.1'
+    exoplayerVerision = 'r2.4.0'
     okhttpVersion = '3.8.0'
     retrofitVersion = '2.3.0'
     glideVersion = '4.0.0-RC0'
@@ -43,6 +44,7 @@ dependencies {
     compile "com.jakewharton:butterknife:$butterknifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
     compile "blue.aodev:material-values:$mateiralvaluesVersion"
+    compile "com.google.android.exoplayer:exoplayer:$exoplayerVerision"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
 }
