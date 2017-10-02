@@ -14,6 +14,7 @@ import com.binghui.binghuiliu.bakingtime.R;
 import com.binghui.binghuiliu.bakingtime.RecipeDetailActivity;
 import com.binghui.binghuiliu.bakingtime.adapters.RecipeAdapter;
 
+import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,6 +26,9 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
 
     @BindView(R.id.recipe_recycler_view)
     RecyclerView recipeRecyclerView;
+
+    @BindInt(R.integer.recipe_column_count)
+    int recipe_column_count;
 
     RecipeAdapter recipeAdapter;
 
@@ -41,7 +45,7 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
         super.onActivityCreated(savedInstanceState);
 
         recipeAdapter = new RecipeAdapter(getContext(), this);
-        recipeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
+        recipeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), recipe_column_count));
         recipeRecyclerView.setAdapter(recipeAdapter);
     }
 
