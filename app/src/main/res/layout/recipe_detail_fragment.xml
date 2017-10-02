@@ -15,7 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryLight"
-            android:padding="@dimen/general_padding"
+            android:paddingHorizontal="@dimen/material_card_title_block_padding_horizontal"
+            android:paddingVertical="@dimen/material_card_title_block_small_padding_vertical"
             tools:text="This is a baking recipe. I hope you will enjoy baking. It is not an easy job."/>
 
 

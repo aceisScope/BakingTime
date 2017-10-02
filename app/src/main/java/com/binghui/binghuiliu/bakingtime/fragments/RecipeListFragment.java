@@ -14,6 +14,7 @@ import com.binghui.binghuiliu.bakingtime.R;
 import com.binghui.binghuiliu.bakingtime.RecipeDetailActivity;
 import com.binghui.binghuiliu.bakingtime.adapters.RecipeAdapter;
 
+import butterknife.BindBool;
 import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +30,9 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
 
     @BindInt(R.integer.recipe_column_count)
     int recipe_column_count;
+
+    @BindBool(R.bool.is_pad)
+    boolean is_pad;
 
     RecipeAdapter recipeAdapter;
 
@@ -51,7 +55,9 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
 
     @Override
     public void onItemClick(int position) {
-        Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
-        startActivity(intent);
+        if (!is_pad){
+            Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
+            startActivity(intent);
+        }
     }
 }
