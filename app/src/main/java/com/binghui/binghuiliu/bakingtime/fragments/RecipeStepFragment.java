@@ -70,13 +70,13 @@ public class RecipeStepFragment extends Fragment {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroy() {
         if (player != null) {
             player.stop();
             player.release();
             player = null;
         }
+        super.onDestroy();
     }
 
     private void initializePlayer() {
