@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.binghui.binghuiliu.bakingtime.RecipeStepActivity;
 import com.binghui.binghuiliu.bakingtime.adapters.RecipeAdapter;
 import com.binghui.binghuiliu.bakingtime.adapters.StepAdapter;
 
+import butterknife.BindBool;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -31,6 +33,9 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
 
     @BindView(R.id.step_recycler_view)
     RecyclerView stepRecyclerView;
+
+    @BindBool(R.bool.is_pad)
+    boolean is_pad;
 
     StepAdapter stepAdapter;
 
@@ -49,11 +54,22 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
         stepAdapter = new StepAdapter(getContext(), this);
         stepRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         stepRecyclerView.setAdapter(stepAdapter);
+
+        loadStepFragment();
     }
 
     @Override
     public void onItemClick(int position) {
-        Intent intent = new Intent(getActivity(), RecipeStepActivity.class);
-        startActivity(intent);
+        if (!is_pad){
+            Intent intent = new Intent(getActivity(), RecipeStepActivity.class);
+            startActivity(intent);
+        } else {
+            loadStepFragment();
+        }
+    }
+
+    private void loadStepFragment() {
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.child_recipe_step_fragment, new RecipeStepFragment()).commit();
     }
 }

@@ -28,6 +28,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.Util;
 
+import butterknife.BindBool;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -42,6 +43,9 @@ public class RecipeStepFragment extends Fragment {
 
     @BindView(R.id.view_step_description)
     CardView stepDescriptionCard;
+
+    @BindBool(R.bool.is_pad)
+    boolean is_pad;
 
     private SimpleExoPlayer player;
 
@@ -59,7 +63,7 @@ public class RecipeStepFragment extends Fragment {
 
         initializePlayer();
 
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !is_pad) {
             // Expand video, hide description, hide system UI
             playVideoInLandscape();
         }

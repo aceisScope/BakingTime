@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,9 +32,6 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
     @BindInt(R.integer.recipe_column_count)
     int recipe_column_count;
 
-    @BindBool(R.bool.is_pad)
-    boolean is_pad;
-
     RecipeAdapter recipeAdapter;
 
     @Nullable
@@ -55,9 +53,7 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
 
     @Override
     public void onItemClick(int position) {
-        if (!is_pad){
-            Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
+        startActivity(intent);
     }
 }
