@@ -55,7 +55,7 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
         stepRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         stepRecyclerView.setAdapter(stepAdapter);
 
-        loadStepFragment();
+        if (is_pad) loadStepFragment();
     }
 
     @Override
