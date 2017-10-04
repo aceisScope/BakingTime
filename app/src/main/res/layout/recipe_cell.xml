@@ -27,11 +27,10 @@
             android:layout_alignParentBottom="true"
             android:padding="@dimen/general_padding"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textColor="@color/colorSecondaryText"
+            android:textColor="?android:attr/textColorPrimaryInverse"
             android:textSize="20sp"
             android:textStyle="bold"
-            tools:text="This is a baking recipe. I hope you will enjoy baking.It is not an easy job."
-             />
+            tools:text="This is a baking recipe. I hope you will enjoy baking.It is not an easy job." />
 
     </RelativeLayout>
 

@@ -38,6 +38,7 @@
                 android:id="@+id/image_step"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/recipe_image_height"
+                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/recipe_image_placeholder" />
 
             <TextView
