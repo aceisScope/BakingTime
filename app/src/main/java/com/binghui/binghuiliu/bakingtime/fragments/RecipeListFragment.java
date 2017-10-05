@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,15 @@ import android.view.ViewGroup;
 import com.binghui.binghuiliu.bakingtime.R;
 import com.binghui.binghuiliu.bakingtime.RecipeDetailActivity;
 import com.binghui.binghuiliu.bakingtime.adapters.RecipeAdapter;
+import com.binghui.binghuiliu.bakingtime.data.RecipeService;
+import com.binghui.binghuiliu.bakingtime.model.Recipe;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 import butterknife.BindBool;
 import butterknife.BindInt;
@@ -49,6 +59,13 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
         recipeAdapter = new RecipeAdapter(getContext(), this);
         recipeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), recipe_column_count));
         recipeRecyclerView.setAdapter(recipeAdapter);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        RecipeService recipeService = new RecipeService(getContext());
+        recipeService.parseRecipeJsonFile();
     }
 
     @Override

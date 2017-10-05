@@ -23,14 +23,10 @@ ext {
     supportLibraryVersion = '26.+'
     butterknifeVersion = '8.8.1'
     mateiralvaluesVersion = '1.1.1'
-    exoplayerVerision = 'r2.4.0'
-    okhttpVersion = '3.8.0'
-    retrofitVersion = '2.3.0'
+    exoplayerVersion = 'r2.4.0'
     glideVersion = '4.0.0-RC0'
-    daggerVersion = '2.11'
-    paperParcelVersion = '2.0.1'
-    exoplayerVersion = 'r2.4.2'
     moshiVersion = '1.5.0'
+    gsonVersion = '2.8.2'
 }
 
 dependencies {
@@ -44,7 +40,8 @@ dependencies {
     compile "com.jakewharton:butterknife:$butterknifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
     compile "blue.aodev:material-values:$mateiralvaluesVersion"
-    compile "com.google.android.exoplayer:exoplayer:$exoplayerVerision"
+    compile "com.google.android.exoplayer:exoplayer:$exoplayerVersion"
+    compile "com.google.code.gson:gson:$gsonVersion"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
 }
