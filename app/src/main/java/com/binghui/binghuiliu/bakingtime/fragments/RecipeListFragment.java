@@ -24,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindBool;
@@ -46,7 +47,7 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
     RecipeAdapter recipeAdapter;
     RecipeService recipeService;
 
-    List<Recipe> recipeList;
+    ArrayList<Recipe> recipeList;
 
     @Nullable
     @Override
@@ -63,6 +64,11 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
         recipeAdapter = new RecipeAdapter(getContext(), this);
         recipeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), recipe_column_count));
         recipeRecyclerView.setAdapter(recipeAdapter);
+
+        if (savedInstanceState != null && savedInstanceState.getParcelableArrayList("recipe_list") != null) {
+            recipeList = savedInstanceState.getParcelableArrayList("recipe_list");
+            recipeAdapter.setRecipes(recipeList);
+        }
     }
 
     @Override
@@ -71,18 +77,22 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
         recipeService = new RecipeService(getContext());
         recipeService.parseRecipeJsonFile();
 
-        recipeList = recipeService.getRecipes();
-        recipeAdapter.setRecipes(recipeList);
+        if (recipeList == null) {
+            recipeList = recipeService.getRecipes();
+            recipeAdapter.setRecipes(recipeList);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("recipe_list", recipeList);
     }
 
     @Override
     public void onItemClick(int position) {
-        Recipe recipe = recipeList.get(position);
-        Type type = new TypeToken<Recipe>() {}.getType();
-        String json = recipeService.gsonInstance().toJson(recipe, type);
-
         Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
-        intent.putExtra("Recipe_Index", json);
+        intent.putExtra("Recipe_Index", position);
         startActivity(intent);
     }
 }

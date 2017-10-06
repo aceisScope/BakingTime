@@ -10,6 +10,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ public class RecipeService {
         this.mContext = context;
     }
 
-    public List<Recipe> recipes = null;
+    public ArrayList<Recipe> recipes = null;
 
     public void parseRecipeJsonFile() {
         //Reading source from local file
@@ -36,7 +37,7 @@ public class RecipeService {
         recipes = mGson.fromJson(jsonString, new TypeToken<List<Recipe>>() {}.getType());
     }
 
-    public List<Recipe> getRecipes() {
+    public ArrayList<Recipe> getRecipes() {
         return this.recipes;
     }
 
