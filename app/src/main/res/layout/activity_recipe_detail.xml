@@ -7,7 +7,7 @@
     tools:context="com.binghui.binghuiliu.bakingtime.RecipeDetailActivity">
 
     <fragment
-        android:id="@+id/main_recipe_fragment"
+        android:id="@+id/detail_recipe_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="com.binghui.binghuiliu.bakingtime.fragments.RecipeDetailFragment" />

@@ -29,6 +29,7 @@ import java.util.List;
 
 import butterknife.BindBool;
 import butterknife.BindInt;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -43,6 +44,12 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
 
     @BindInt(R.integer.recipe_column_count)
     int recipe_column_count;
+
+    @BindString(R.string.recipe_list_key)
+    String recipe_list_key;
+
+    @BindString(R.string.recipe_index_key)
+    String recipe_index_key;
 
     RecipeAdapter recipeAdapter;
     RecipeService recipeService;
@@ -92,7 +99,8 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
     @Override
     public void onItemClick(int position) {
         Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
-        intent.putExtra("Recipe_Index", position);
+        intent.putParcelableArrayListExtra(recipe_list_key, recipeList);
+        intent.putExtra(recipe_index_key, position);
         startActivity(intent);
     }
 }

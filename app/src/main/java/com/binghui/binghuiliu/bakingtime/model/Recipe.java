@@ -15,8 +15,8 @@ public class Recipe implements Parcelable {
     public String name;
     public int servings;
     public String image;
-    public List<Ingredient> ingredients;
-    public List<Step> steps;
+    public ArrayList<Ingredient> ingredients;
+    public ArrayList<Step> steps;
 
     @Override
     public int describeContents() {
