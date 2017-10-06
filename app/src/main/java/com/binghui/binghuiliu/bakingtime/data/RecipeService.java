@@ -19,6 +19,7 @@ import java.util.List;
 public class RecipeService {
 
     private Context mContext;
+    private Gson mGson;
 
     public RecipeService(Context context) {
         this.mContext = context;
@@ -31,12 +32,19 @@ public class RecipeService {
         InputStream inputStream = mContext.getResources().openRawResource(R.raw.baking);
         String jsonString = readJsonFile(inputStream);
 
-        Gson gson = new Gson();
-        recipes = gson.fromJson(jsonString, new TypeToken<List<Recipe>>() {}.getType());
+        mGson = new Gson();
+        recipes = mGson.fromJson(jsonString, new TypeToken<List<Recipe>>() {}.getType());
     }
 
     public List<Recipe> getRecipes() {
         return this.recipes;
+    }
+
+    public Gson gsonInstance() {
+        if (mGson == null) {
+            mGson = new Gson();
+        }
+        return mGson;
     }
 
     private String readJsonFile(InputStream inputStream) {

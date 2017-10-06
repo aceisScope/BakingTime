@@ -23,6 +23,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.util.List;
 
 import butterknife.BindBool;
@@ -70,13 +71,18 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
         recipeService = new RecipeService(getContext());
         recipeService.parseRecipeJsonFile();
 
-        recipeAdapter.setRecipes(recipeService.getRecipes());
+        recipeList = recipeService.getRecipes();
+        recipeAdapter.setRecipes(recipeList);
     }
 
     @Override
     public void onItemClick(int position) {
+        Recipe recipe = recipeList.get(position);
+        Type type = new TypeToken<Recipe>() {}.getType();
+        String json = recipeService.gsonInstance().toJson(recipe, type);
+
         Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
-        intent.putExtra("Recipe_Index", position);
+        intent.putExtra("Recipe_Index", json);
         startActivity(intent);
     }
 }

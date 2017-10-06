@@ -44,8 +44,6 @@ dependencies {
     compile "com.google.code.gson:gson:$gsonVersion"
     compile "com.github.bumptech.glide:glide:$glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
-    compile 'me.tatarka:auto-parcel-gson:0.1'
-    annotationProcessor 'me.tatarka:auto-parcel-gson-processor:0.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
 }
