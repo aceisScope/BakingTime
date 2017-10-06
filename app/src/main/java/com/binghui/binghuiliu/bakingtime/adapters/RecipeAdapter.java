@@ -10,9 +10,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.binghui.binghuiliu.bakingtime.R;
+import com.binghui.binghuiliu.bakingtime.model.Recipe;
+import com.binghui.binghuiliu.bakingtime.utility.GlideApp;
+import com.bumptech.glide.Glide;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.R.attr.fragment;
 
 /**
  * Created by binghuiliu on 27/09/2017.
@@ -23,6 +30,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     private Context mContext;
     private OnItemClickListener mClickListener;
 
+    private List<Recipe> recipes;
+
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
@@ -30,6 +39,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     public RecipeAdapter(Context context, OnItemClickListener onClickListener) {
         this.mContext = context;
         this.mClickListener = onClickListener;
+    }
+
+    public void setRecipes(List<Recipe> newRecipes) {
+        this.recipes = newRecipes;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -40,14 +54,22 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     @Override
     public void onBindViewHolder(RecipeViewHolder holder, int position) {
-        holder.recipeImage.setImageResource(R.drawable.recipe_image_placeholder);
-        holder.recipeTitle.setText("This is a baking recipe. I hope you will enjoy baking.It is not an easy job.");
+        Recipe recipe = recipes.get(position);
+        holder.recipeTitle.setText(recipe.name);
+        GlideApp.with(mContext)
+                .load(recipe.image)
+                .placeholder(R.drawable.recipe_image_placeholder)
+                .into(holder.recipeImage);
     }
 
 
     @Override
     public int getItemCount() {
-        return 5;
+        if (recipes != null) {
+            return recipes.size();
+        } else {
+            return 0;
+        }
     }
 
     public class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

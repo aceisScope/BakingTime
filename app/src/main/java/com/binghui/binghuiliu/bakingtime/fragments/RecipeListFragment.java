@@ -43,6 +43,9 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
     int recipe_column_count;
 
     RecipeAdapter recipeAdapter;
+    RecipeService recipeService;
+
+    List<Recipe> recipeList;
 
     @Nullable
     @Override
@@ -64,13 +67,16 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
     @Override
     public void onStart() {
         super.onStart();
-        RecipeService recipeService = new RecipeService(getContext());
+        recipeService = new RecipeService(getContext());
         recipeService.parseRecipeJsonFile();
+
+        recipeAdapter.setRecipes(recipeService.getRecipes());
     }
 
     @Override
     public void onItemClick(int position) {
         Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
+        intent.putExtra("Recipe_Index", position);
         startActivity(intent);
     }
 }

@@ -35,6 +35,10 @@ public class RecipeService {
         recipes = gson.fromJson(jsonString, new TypeToken<List<Recipe>>() {}.getType());
     }
 
+    public List<Recipe> getRecipes() {
+        return this.recipes;
+    }
+
     private String readJsonFile(InputStream inputStream) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
