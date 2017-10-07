@@ -76,11 +76,12 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        textIngredient.setText(constructIngredientsDescription(currentRecipe.ingredients));
-
         stepAdapter = new StepAdapter(getContext(), this);
         stepRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         stepRecyclerView.setAdapter(stepAdapter);
+
+        textIngredient.setText(constructIngredientsDescription(currentRecipe.ingredients));
+        stepAdapter.setSteps(currentRecipe.steps);
 
         if (is_pad) loadStepFragment();
     }

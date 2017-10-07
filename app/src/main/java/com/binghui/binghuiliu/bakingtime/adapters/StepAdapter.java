@@ -9,6 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.binghui.binghuiliu.bakingtime.R;
+import com.binghui.binghuiliu.bakingtime.model.Step;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +25,8 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
     private Context mContext;
     private StepAdapter.OnItemClickListener mClickListener;
 
+    private ArrayList<Step> steps;
+
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
@@ -29,6 +34,11 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
     public StepAdapter(Context context, StepAdapter.OnItemClickListener onClickListener) {
         this.mContext = context;
         this.mClickListener = onClickListener;
+    }
+
+    public void setSteps(ArrayList<Step> newSteps) {
+        this.steps = newSteps;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -39,12 +49,16 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder
 
     @Override
     public void onBindViewHolder(StepViewHolder holder, int position) {
-        holder.stepText.setText("Step 1: Add flour into the bowl");
+        holder.stepText.setText(steps.get(position).shortDescription);
     }
 
     @Override
     public int getItemCount() {
-        return 10;
+        if (steps != null) {
+            return steps.size();
+        } else {
+            return 0;
+        }
     }
 
     public class StepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
