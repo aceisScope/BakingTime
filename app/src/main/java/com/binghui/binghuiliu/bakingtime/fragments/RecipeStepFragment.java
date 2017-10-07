@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.binghui.binghuiliu.bakingtime.R;
+import com.binghui.binghuiliu.bakingtime.model.Recipe;
+import com.binghui.binghuiliu.bakingtime.model.Step;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -47,7 +50,14 @@ public class RecipeStepFragment extends Fragment {
     @BindBool(R.bool.is_pad)
     boolean is_pad;
 
+    private Step step;
+
     private SimpleExoPlayer player;
+
+    public void setStep(Step newStep){
+        step = newStep;
+        Log.d("DEBUG", step.shortDescription);
+    }
 
     @Nullable
     @Override

@@ -10,16 +10,13 @@ import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.binghui.binghuiliu.bakingtime.R;
-import com.binghui.binghuiliu.bakingtime.RecipeDetailActivity;
 import com.binghui.binghuiliu.bakingtime.RecipeStepActivity;
-import com.binghui.binghuiliu.bakingtime.adapters.RecipeAdapter;
 import com.binghui.binghuiliu.bakingtime.adapters.StepAdapter;
 import com.binghui.binghuiliu.bakingtime.model.Ingredient;
 import com.binghui.binghuiliu.bakingtime.model.Recipe;
@@ -49,7 +46,7 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
     boolean is_pad;
 
     ArrayList<Recipe> recipeList;
-    ArrayList<Step> stepList;
+    ArrayList<Step> currentRecipeStepList;
     Recipe currentRecipe;
     int currentIndex;
     StepAdapter stepAdapter;
@@ -61,6 +58,7 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
     public void setCurrentIndex(int newCurrentIndex) {
         this.currentIndex = newCurrentIndex;
         this.currentRecipe = recipeList.get(newCurrentIndex);
+        this.currentRecipeStepList = currentRecipe.steps;
     }
 
     @Nullable
@@ -83,7 +81,7 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
         textIngredient.setText(constructIngredientsDescription(currentRecipe.ingredients));
         stepAdapter.setSteps(currentRecipe.steps);
 
-        if (is_pad) loadStepFragment();
+        if (is_pad) loadStepFragmentOfCurrentStep(currentRecipeStepList.get(0));
     }
 
     @Override
@@ -92,13 +90,15 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
             Intent intent = new Intent(getActivity(), RecipeStepActivity.class);
             startActivity(intent);
         } else {
-            loadStepFragment();
+            loadStepFragmentOfCurrentStep(currentRecipeStepList.get(position));
         }
     }
 
-    private void loadStepFragment() {
+    private void loadStepFragmentOfCurrentStep(Step currentStep) {
+        RecipeStepFragment stepFragment = new RecipeStepFragment();
+        stepFragment.setStep(currentStep);
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.child_recipe_step_fragment, new RecipeStepFragment()).commit();
+        transaction.replace(R.id.child_recipe_step_fragment, stepFragment).commit();
     }
 
     private CharSequence constructIngredientsDescription(ArrayList<Ingredient> ingredients) {
