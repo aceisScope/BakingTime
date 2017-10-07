@@ -25,6 +25,7 @@ import com.binghui.binghuiliu.bakingtime.model.Step;
 import java.util.ArrayList;
 
 import butterknife.BindBool;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -44,6 +45,9 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
 
     @BindBool(R.bool.is_pad)
     boolean is_pad;
+
+    @BindString(R.string.recipe_step_key)
+    String recipe_step_key;
 
     ArrayList<Recipe> recipeList;
     ArrayList<Step> currentRecipeStepList;
@@ -88,6 +92,7 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
     public void onItemClick(int position) {
         if (!is_pad){
             Intent intent = new Intent(getActivity(), RecipeStepActivity.class);
+            intent.putExtra(recipe_step_key, currentRecipeStepList.get(position));
             startActivity(intent);
         } else {
             loadStepFragmentOfCurrentStep(currentRecipeStepList.get(position));
