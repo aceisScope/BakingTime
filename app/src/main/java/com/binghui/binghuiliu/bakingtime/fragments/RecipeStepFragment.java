@@ -77,7 +77,8 @@ public class RecipeStepFragment extends Fragment {
         View view = inflater.inflate(R.layout.recipe_step_fragment, container, false);
         ButterKnife.bind(this, view);
 
-        if (getArguments() != null) {
+        if (getArguments() != null && is_pad) {
+            // for two-panel case only
             step = getArguments().getParcelable(recipe_step_key);
         }
 
