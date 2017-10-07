@@ -52,15 +52,14 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
     ArrayList<Recipe> recipeList;
     ArrayList<Step> currentRecipeStepList;
     Recipe currentRecipe;
-    int currentIndex;
+    Step currentStep;
     StepAdapter stepAdapter;
 
     public void setRecipeList(ArrayList<Recipe> newRecpeList) {
         this.recipeList = newRecpeList;
     }
 
-    public void setCurrentIndex(int newCurrentIndex) {
-        this.currentIndex = newCurrentIndex;
+    public void setCurrentRecipeIndex(int newCurrentIndex) {
         this.currentRecipe = recipeList.get(newCurrentIndex);
         this.currentRecipeStepList = currentRecipe.steps;
     }
@@ -85,23 +84,40 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
         textIngredient.setText(constructIngredientsDescription(currentRecipe.ingredients));
         stepAdapter.setSteps(currentRecipe.steps);
 
-        if (is_pad) loadStepFragmentOfCurrentStep(currentRecipeStepList.get(0));
+        if (is_pad) {
+            if (savedInstanceState != null) {
+                currentStep = savedInstanceState.getParcelable(recipe_step_key);
+            } else {
+                currentStep = currentRecipeStepList.get(0);
+            }
+            loadStepFragmentOfCurrentStep(currentStep);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(recipe_step_key, currentStep);
     }
 
     @Override
     public void onItemClick(int position) {
+        currentStep = currentRecipeStepList.get(position);
         if (!is_pad){
             Intent intent = new Intent(getActivity(), RecipeStepActivity.class);
-            intent.putExtra(recipe_step_key, currentRecipeStepList.get(position));
+            intent.putExtra(recipe_step_key, currentStep);
             startActivity(intent);
         } else {
-            loadStepFragmentOfCurrentStep(currentRecipeStepList.get(position));
+            loadStepFragmentOfCurrentStep(currentStep);
         }
     }
 
     private void loadStepFragmentOfCurrentStep(Step currentStep) {
         RecipeStepFragment stepFragment = new RecipeStepFragment();
-        stepFragment.setStep(currentStep);
+        // pass step object via bundle, so it can be persisted over rotation
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(recipe_step_key, currentStep);
+        stepFragment.setArguments(bundle);
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.child_recipe_step_fragment, stepFragment).commit();
     }

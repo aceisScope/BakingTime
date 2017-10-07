@@ -10,10 +10,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.binghui.binghuiliu.bakingtime.R;
 import com.binghui.binghuiliu.bakingtime.model.Recipe;
 import com.binghui.binghuiliu.bakingtime.model.Step;
+import com.binghui.binghuiliu.bakingtime.utility.GlideApp;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -32,6 +35,7 @@ import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.Util;
 
 import butterknife.BindBool;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -47,16 +51,24 @@ public class RecipeStepFragment extends Fragment {
     @BindView(R.id.view_step_description)
     CardView stepDescriptionCard;
 
+    @BindView(R.id.text_step)
+    TextView stepDescription;
+
+    @BindView(R.id.image_step)
+    ImageView stepThumbnail;
+
     @BindBool(R.bool.is_pad)
     boolean is_pad;
+
+    @BindString(R.string.recipe_step_key)
+    String recipe_step_key;
 
     private Step step;
 
     private SimpleExoPlayer player;
 
     public void setStep(Step newStep){
-        step = newStep;
-        Log.d("DEBUG", step.shortDescription);
+        this.step = newStep;
     }
 
     @Nullable
@@ -64,6 +76,11 @@ public class RecipeStepFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recipe_step_fragment, container, false);
         ButterKnife.bind(this, view);
+
+        if (getArguments() != null) {
+            step = getArguments().getParcelable(recipe_step_key);
+        }
+
         return view;
     }
 
@@ -71,7 +88,7 @@ public class RecipeStepFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        initializePlayer();
+        displayStep();
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !is_pad) {
             // Expand video, hide description, hide system UI
@@ -89,7 +106,24 @@ public class RecipeStepFragment extends Fragment {
         super.onDestroy();
     }
 
-    private void initializePlayer() {
+    private void displayStep() {
+        stepDescription.setText(step.description);
+        if (step.videoURL != null && step.videoURL.length() >0) {
+            initializePlayer(step.videoURL);
+        } else {
+            stepVideo.setVisibility(View.GONE);
+        }
+        if (step.thumbnailURL != null && step.thumbnailURL.length() >0){
+            GlideApp.with(getContext())
+                    .load(step.thumbnailURL)
+                    .placeholder(R.drawable.recipe_image_placeholder)
+                    .into(stepThumbnail);
+        } else {
+            stepThumbnail.setVisibility(View.GONE);
+        }
+    }
+
+    private void initializePlayer(String url) {
         if (player == null) {
             stepVideo.requestFocus();
 
@@ -106,7 +140,7 @@ public class RecipeStepFragment extends Fragment {
 
             DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
 
-            MediaSource mediaSource = new ExtractorMediaSource(Uri.parse("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"),
+            MediaSource mediaSource = new ExtractorMediaSource(Uri.parse(url),
                     mediaDataSourceFactory, extractorsFactory, null, null);
 
             player.prepare(mediaSource);

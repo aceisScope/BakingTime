@@ -1,11 +1,7 @@
 package com.binghui.binghuiliu.bakingtime;
 
-import android.content.Intent;
-import android.os.PersistableBundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.binghui.binghuiliu.bakingtime.fragments.RecipeDetailFragment;
@@ -33,7 +29,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_detail);
         ButterKnife.bind(this);
 
-        if (savedInstanceState != null && savedInstanceState.getParcelableArray(recipe_list_key) != null) {
+        if (savedInstanceState != null) {
             recipeList = savedInstanceState.getParcelableArrayList(recipe_list_key);
             currentIndex = savedInstanceState.getInt(recipe_index_key, 0);
         } else {
@@ -42,7 +38,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         }
         RecipeDetailFragment detailFragment = (RecipeDetailFragment) getSupportFragmentManager().findFragmentById(R.id.detail_recipe_fragment);
         detailFragment.setRecipeList(recipeList);
-        detailFragment.setCurrentIndex(currentIndex);
+        detailFragment.setCurrentRecipeIndex(currentIndex);
     }
 
     @Override

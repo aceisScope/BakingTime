@@ -26,7 +26,12 @@ public class RecipeStepActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_step);
         ButterKnife.bind(this);
 
-        step = getIntent().getParcelableExtra(recipe_step_key);
+        if (savedInstanceState != null) {
+            step = savedInstanceState.getParcelable(recipe_step_key);
+        } else {
+            step = getIntent().getParcelableExtra(recipe_step_key);
+        }
+
         RecipeStepFragment detailFragment = (RecipeStepFragment) getSupportFragmentManager().findFragmentById(R.id.step_recipe_fragment);
         detailFragment.setStep(step);
     }
@@ -38,5 +43,11 @@ public class RecipeStepActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(recipe_step_key, step);
     }
 }
