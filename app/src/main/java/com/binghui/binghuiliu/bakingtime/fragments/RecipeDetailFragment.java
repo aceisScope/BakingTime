@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.binghui.binghuiliu.bakingtime.R;
 import com.binghui.binghuiliu.bakingtime.RecipeStepActivity;
 import com.binghui.binghuiliu.bakingtime.adapters.StepAdapter;
+import com.binghui.binghuiliu.bakingtime.data.RecipeService;
 import com.binghui.binghuiliu.bakingtime.model.Ingredient;
 import com.binghui.binghuiliu.bakingtime.model.Recipe;
 import com.binghui.binghuiliu.bakingtime.model.Step;
@@ -81,7 +82,7 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
         stepRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         stepRecyclerView.setAdapter(stepAdapter);
 
-        textIngredient.setText(constructIngredientsDescription(currentRecipe.ingredients));
+        textIngredient.setText(RecipeService.constructIngredientsDescription(getContext(), currentRecipe.ingredients));
         stepAdapter.setSteps(currentRecipe.steps);
 
         if (is_pad) {
@@ -120,20 +121,5 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
         stepFragment.setArguments(bundle);
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.child_recipe_step_fragment, stepFragment).commit();
-    }
-
-    private CharSequence constructIngredientsDescription(ArrayList<Ingredient> ingredients) {
-        String ingredientsTitle = "INGREDIENTS";
-        SpannableString spanTitle = new SpannableString(ingredientsTitle);
-        spanTitle.setSpan(new AbsoluteSizeSpan(getResources().getDimensionPixelSize(R.dimen.material_typography_regular_title_text_size)), 0, ingredientsTitle.length(), SPAN_INCLUSIVE_INCLUSIVE);
-
-        String ingredientsString = "\n";
-        for (Ingredient ingredient: ingredients) {
-            ingredientsString += ingredient.name + ": " + ingredient.quantity + " " + ingredient.measure + "\n";
-        }
-        SpannableString spanContent = new SpannableString(ingredientsString);
-        spanContent.setSpan(new AbsoluteSizeSpan(getResources().getDimensionPixelSize(R.dimen.material_typography_regular_body_1_text_size)), 0, ingredientsString.length(), SPAN_INCLUSIVE_INCLUSIVE);
-
-        return TextUtils.concat(spanTitle, spanContent);
     }
 }

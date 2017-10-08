@@ -4,10 +4,11 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/widget_recipe"
+        android:id="@+id/text_widget_recipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryLight"
-        android:text="This is a recipe."/>
+        android:text="@string/recipe_widget_text"
+        android:padding="@dimen/general_padding"/>
 
 </LinearLayout>

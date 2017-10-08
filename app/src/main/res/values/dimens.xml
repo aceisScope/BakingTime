@@ -2,4 +2,6 @@
 <resources>
     <dimen name="general_padding">8dp</dimen>
     <dimen name="recipe_image_height">200dp</dimen>
+    <dimen name="widget_min_height">200dp</dimen>
+    <dimen name="widget_min_width">250dp</dimen>
 </resources>

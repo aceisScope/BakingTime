@@ -1,5 +1,7 @@
 package com.binghui.binghuiliu.bakingtime.fragments;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +19,7 @@ import com.binghui.binghuiliu.bakingtime.RecipeDetailActivity;
 import com.binghui.binghuiliu.bakingtime.adapters.RecipeAdapter;
 import com.binghui.binghuiliu.bakingtime.data.RecipeService;
 import com.binghui.binghuiliu.bakingtime.model.Recipe;
+import com.binghui.binghuiliu.bakingtime.widget.RecipeAppWidgetProvider;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -98,6 +101,13 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
 
     @Override
     public void onItemClick(int position) {
+        Intent widgetIntent = new Intent(getActivity(), RecipeAppWidgetProvider.class);
+        int ids[] = AppWidgetManager.getInstance(getActivity()).getAppWidgetIds(new ComponentName(getActivity(), RecipeAppWidgetProvider.class));
+        widgetIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        widgetIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        widgetIntent.putExtra(AppWidgetManager.EXTRA_CUSTOM_INFO, recipeList.get(position));
+        getContext().sendBroadcast(widgetIntent);
+
         Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
         intent.putParcelableArrayListExtra(recipe_list_key, recipeList);
         intent.putExtra(recipe_index_key, position);
