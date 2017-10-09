@@ -3,5 +3,5 @@
     <string name="recipe_list_key">recipe_list</string>
     <string name="recipe_index_key">recipe_index</string>
     <string name="recipe_step_key">recipe_step</string>
-    <string name="recipe_widget_text">The ingredients of the chose recipe will be here.</string>
+    <string name="recipe_widget_text">The next time when you choose a recipe, the ingredients of the chosen recipe will be here.</string>
 </resources>
