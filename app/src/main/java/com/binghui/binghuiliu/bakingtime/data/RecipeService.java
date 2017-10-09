@@ -32,7 +32,7 @@ public class RecipeService {
         this.mContext = context;
     }
 
-    public ArrayList<Recipe> recipes = null;
+    public static ArrayList<Recipe> recipes = null;
 
     public void parseRecipeJsonFile() {
         //Reading source from local file
@@ -43,8 +43,8 @@ public class RecipeService {
         recipes = mGson.fromJson(jsonString, new TypeToken<List<Recipe>>() {}.getType());
     }
 
-    public ArrayList<Recipe> getRecipes() {
-        return this.recipes;
+    public static ArrayList<Recipe> getRecipes() {
+        return RecipeService.recipes;
     }
 
     public static CharSequence constructIngredientsDescription(Context context, ArrayList<Ingredient> ingredients) {

@@ -2,8 +2,10 @@ package com.binghui.binghuiliu.bakingtime;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
+import com.binghui.binghuiliu.bakingtime.data.RecipeService;
 import com.binghui.binghuiliu.bakingtime.fragments.RecipeDetailFragment;
 import com.binghui.binghuiliu.bakingtime.model.Recipe;
 
@@ -33,7 +35,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
             recipeList = savedInstanceState.getParcelableArrayList(recipe_list_key);
             currentIndex = savedInstanceState.getInt(recipe_index_key, 0);
         } else {
-            recipeList = getIntent().getParcelableArrayListExtra(recipe_list_key);
+            recipeList = RecipeService.recipes;
             currentIndex = getIntent().getIntExtra(recipe_index_key, 0);
         }
         RecipeDetailFragment detailFragment = (RecipeDetailFragment) getSupportFragmentManager().findFragmentById(R.id.detail_recipe_fragment);

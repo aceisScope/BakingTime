@@ -48,9 +48,6 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
     @BindInt(R.integer.recipe_column_count)
     int recipe_column_count;
 
-    @BindString(R.string.recipe_list_key)
-    String recipe_list_key;
-
     @BindString(R.string.recipe_index_key)
     String recipe_index_key;
 
@@ -109,7 +106,6 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
         getContext().sendBroadcast(widgetIntent);
 
         Intent intent = new Intent(getActivity(), RecipeDetailActivity.class);
-        intent.putParcelableArrayListExtra(recipe_list_key, recipeList);
         intent.putExtra(recipe_index_key, position);
         startActivity(intent);
     }
