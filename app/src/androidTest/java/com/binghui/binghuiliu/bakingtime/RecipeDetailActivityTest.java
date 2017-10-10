@@ -8,8 +8,7 @@ import android.support.test.filters.SmallTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.binghui.binghuiliu.bakingtime.data.RecipeService;
-import com.binghui.binghuiliu.bakingtime.model.Recipe;
+import com.binghui.binghuiliu.bakingtime.data.RecipeProvider;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -36,8 +35,8 @@ public class RecipeDetailActivityTest {
     @Before
     public void initRecipeService() {
         Context targetContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        RecipeService recipeService = new RecipeService(targetContext);
-        recipeService.parseRecipeJsonFile();
+        RecipeProvider recipeProvider = new RecipeProvider(targetContext);
+        recipeProvider.parseRecipeJsonFile();
     }
 
     @Test

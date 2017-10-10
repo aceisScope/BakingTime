@@ -6,10 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,24 +15,19 @@ import android.view.ViewGroup;
 import com.binghui.binghuiliu.bakingtime.R;
 import com.binghui.binghuiliu.bakingtime.RecipeDetailActivity;
 import com.binghui.binghuiliu.bakingtime.adapters.RecipeAdapter;
-import com.binghui.binghuiliu.bakingtime.data.RecipeService;
+import com.binghui.binghuiliu.bakingtime.data.RecipeProvider;
 import com.binghui.binghuiliu.bakingtime.model.Recipe;
 import com.binghui.binghuiliu.bakingtime.widget.RecipeAppWidgetProvider;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
-import butterknife.BindBool;
 import butterknife.BindInt;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by binghuiliu on 25/09/2017.
@@ -52,7 +45,7 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
     String recipe_index_key;
 
     RecipeAdapter recipeAdapter;
-    RecipeService recipeService;
+    RecipeProvider recipeProvider;
 
     ArrayList<Recipe> recipeList;
 
@@ -81,12 +74,22 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
     @Override
     public void onStart() {
         super.onStart();
-        recipeService = new RecipeService(getContext());
-        recipeService.parseRecipeJsonFile();
-
         if (recipeList == null) {
-            recipeList = recipeService.getRecipes();
-            recipeAdapter.setRecipes(recipeList);
+            recipeProvider = new RecipeProvider(getContext());
+            recipeProvider.fetchRecipeList(new Callback<ArrayList<Recipe>>() {
+                @Override
+                public void onResponse(Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
+                    RecipeProvider.recipes = response.body();
+
+                    recipeList = response.body();
+                    recipeAdapter.setRecipes(recipeList);
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<Recipe>> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
         }
     }
 

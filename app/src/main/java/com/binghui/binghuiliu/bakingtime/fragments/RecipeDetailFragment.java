@@ -7,9 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
-import android.text.TextUtils;
-import android.text.style.AbsoluteSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +15,7 @@ import android.widget.TextView;
 import com.binghui.binghuiliu.bakingtime.R;
 import com.binghui.binghuiliu.bakingtime.RecipeStepActivity;
 import com.binghui.binghuiliu.bakingtime.adapters.StepAdapter;
-import com.binghui.binghuiliu.bakingtime.data.RecipeService;
-import com.binghui.binghuiliu.bakingtime.model.Ingredient;
+import com.binghui.binghuiliu.bakingtime.data.RecipeProvider;
 import com.binghui.binghuiliu.bakingtime.model.Recipe;
 import com.binghui.binghuiliu.bakingtime.model.Step;
 
@@ -29,8 +25,6 @@ import butterknife.BindBool;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE;
 
 /**
  * Created by binghuiliu on 28/09/2017.
@@ -82,7 +76,7 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
         stepRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
         stepRecyclerView.setAdapter(stepAdapter);
 
-        textIngredient.setText(RecipeService.constructIngredientsDescription(getContext(), currentRecipe.ingredients));
+        textIngredient.setText(RecipeProvider.constructIngredientsDescription(getContext(), currentRecipe.ingredients));
         stepAdapter.setSteps(currentRecipe.steps);
 
         if (is_pad) {

@@ -4,11 +4,13 @@ import android.content.Context;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
+import android.util.Log;
 
 import com.binghui.binghuiliu.bakingtime.R;
 import com.binghui.binghuiliu.bakingtime.model.Ingredient;
 import com.binghui.binghuiliu.bakingtime.model.Recipe;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.ByteArrayOutputStream;
@@ -17,35 +19,46 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+
 import static android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE;
 
 /**
  * Created by binghuiliu on 05/10/2017.
  */
 
-public class RecipeService {
+public class RecipeProvider {
+
+    public interface RecipeService {
+        @GET("android-baking-app-json")
+        Call<ArrayList<Recipe>> recipeList();
+    }
 
     private Context mContext;
-    private Gson mGson;
 
-    public RecipeService(Context context) {
+    public RecipeProvider(Context context) {
         this.mContext = context;
     }
 
     public static ArrayList<Recipe> recipes = null;
 
-    public void parseRecipeJsonFile() {
-        //Reading source from local file
-        InputStream inputStream = mContext.getResources().openRawResource(R.raw.baking);
-        String jsonString = readJsonFile(inputStream);
+    public void fetchRecipeList(Callback<ArrayList<Recipe>> callback) {
+        Gson gson = new GsonBuilder().create();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://go.udacity.com/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
 
-        mGson = new Gson();
-        recipes = mGson.fromJson(jsonString, new TypeToken<List<Recipe>>() {}.getType());
+        RecipeService recipeService = retrofit.create(RecipeService.class);
+        Call<ArrayList<Recipe>> call = recipeService.recipeList();
+        call.enqueue(callback);
     }
 
-    public static ArrayList<Recipe> getRecipes() {
-        return RecipeService.recipes;
-    }
 
     public static CharSequence constructIngredientsDescription(Context context, ArrayList<Ingredient> ingredients) {
         String ingredientsTitle = "INGREDIENTS";
