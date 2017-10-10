@@ -24,6 +24,8 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
+import static org.hamcrest.CoreMatchers.allOf;
 
 /**
  * Created by binghuiliu on 2017/10/9.
@@ -57,6 +59,25 @@ public class RecipeDetailActivityTest {
         onView(withId(R.id.step_recycler_view))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
         onView(withId(R.id.text_step))
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void clickOnStepWithVideoShowsVideo() {
+        Context targetContext = InstrumentationRegistry.getInstrumentation()
+                .getTargetContext();
+        Intent intent = new Intent(targetContext, RecipeDetailActivity.class);
+        intent.putExtra("recipe_index", 0);
+
+        mActivityRule.launchActivity(intent);
+
+        onView(withId(R.id.step_recycler_view))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(
+                allOf(
+                        withId(R.id.video_step),
+                        withParent(withId(R.id.step_recipe_fragment)),
+                        isDisplayed()))
                 .check(matches(isDisplayed()));
     }
 }
