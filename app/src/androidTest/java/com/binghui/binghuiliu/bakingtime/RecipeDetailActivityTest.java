@@ -3,12 +3,16 @@ package com.binghui.binghuiliu.bakingtime;
 import android.content.Context;
 import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.test.filters.SmallTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.test.RenamingDelegatingContext;
 
 import com.binghui.binghuiliu.bakingtime.data.RecipeProvider;
+import com.binghui.binghuiliu.bakingtime.model.Recipe;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -32,8 +36,17 @@ public class RecipeDetailActivityTest {
     public ActivityTestRule<RecipeDetailActivity> mActivityRule =
             new ActivityTestRule<>(RecipeDetailActivity.class, true, false);
 
+    Context mMockContext;
+
+    @Before
+    public void localMockupRecipe() {
+        mMockContext = new RenamingDelegatingContext(InstrumentationRegistry.getTargetContext(), "test_");
+        RecipeProvider recipeProvider = new RecipeProvider(mMockContext);
+        recipeProvider.parseRecipeJsonFile();
+    }
+
     @Test
-    public void someTest() {
+    public void clickOnStepListDisplaysStepFragment() {
         Context targetContext = InstrumentationRegistry.getInstrumentation()
                 .getTargetContext();
         Intent intent = new Intent(targetContext, RecipeDetailActivity.class);

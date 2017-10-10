@@ -2,6 +2,7 @@ package com.binghui.binghuiliu.bakingtime.data;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.VisibleForTesting;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
@@ -92,4 +93,12 @@ public class RecipeProvider {
         }
         return outputStream.toString();
     }
+
+    @VisibleForTesting
+    public void parseRecipeJsonFile() {
+        InputStream inputStream = mContext.getResources().openRawResource(R.raw.baking);
+        String jsonString = readJsonFile(inputStream);
+        recipes = new Gson().fromJson(jsonString, new TypeToken<List<Recipe>>() {}.getType());
+    }
+
 }
