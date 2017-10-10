@@ -40,7 +40,7 @@ public class RecipeDetailActivityTest {
 
     @Before
     public void localMockupRecipe() {
-        mMockContext = new RenamingDelegatingContext(InstrumentationRegistry.getTargetContext(), "test_");
+        mMockContext = InstrumentationRegistry.getTargetContext();
         RecipeProvider recipeProvider = new RecipeProvider(mMockContext);
         recipeProvider.parseRecipeJsonFile();
     }
