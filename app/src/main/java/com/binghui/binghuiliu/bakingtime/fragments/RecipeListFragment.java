@@ -4,7 +4,10 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +18,7 @@ import android.view.ViewGroup;
 import com.binghui.binghuiliu.bakingtime.R;
 import com.binghui.binghuiliu.bakingtime.RecipeDetailActivity;
 import com.binghui.binghuiliu.bakingtime.adapters.RecipeAdapter;
+import com.binghui.binghuiliu.bakingtime.data.RecipeIdlingResource;
 import com.binghui.binghuiliu.bakingtime.data.RecipeProvider;
 import com.binghui.binghuiliu.bakingtime.model.Recipe;
 import com.binghui.binghuiliu.bakingtime.widget.RecipeAppWidgetProvider;
@@ -45,58 +49,29 @@ public class RecipeListFragment extends Fragment implements RecipeAdapter.OnItem
     String recipe_index_key;
 
     RecipeAdapter recipeAdapter;
-    RecipeProvider recipeProvider;
-
     ArrayList<Recipe> recipeList;
+
+    public void setRecipeList(ArrayList<Recipe> newRecipeList) {
+        this.recipeList = newRecipeList;
+        recipeAdapter.setRecipes(newRecipeList);
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recipe_list_fragment, container, false);
         ButterKnife.bind(this, view);
+
+        recipeAdapter = new RecipeAdapter(getContext(), this);
+        recipeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), recipe_column_count));
+        recipeRecyclerView.setAdapter(recipeAdapter);
+
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        recipeAdapter = new RecipeAdapter(getContext(), this);
-        recipeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), recipe_column_count));
-        recipeRecyclerView.setAdapter(recipeAdapter);
-
-        if (savedInstanceState != null && savedInstanceState.getParcelableArrayList("recipe_list") != null) {
-            recipeList = savedInstanceState.getParcelableArrayList("recipe_list");
-            recipeAdapter.setRecipes(recipeList);
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (recipeList == null) {
-            recipeProvider = new RecipeProvider(getContext());
-            recipeProvider.fetchRecipeList(new Callback<ArrayList<Recipe>>() {
-                @Override
-                public void onResponse(Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
-                    RecipeProvider.recipes = response.body();
-
-                    recipeList = response.body();
-                    recipeAdapter.setRecipes(recipeList);
-                }
-
-                @Override
-                public void onFailure(Call<ArrayList<Recipe>> call, Throwable t) {
-                    t.printStackTrace();
-                }
-            });
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("recipe_list", recipeList);
     }
 
     @Override
