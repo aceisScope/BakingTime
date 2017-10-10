@@ -1,15 +1,11 @@
 package com.binghui.binghuiliu.bakingtime;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
-import android.support.test.espresso.IdlingResource;
+import android.support.test.espresso.idling.CountingIdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.binghui.binghuiliu.bakingtime.data.RecipeIdlingResource;
 import com.binghui.binghuiliu.bakingtime.data.RecipeProvider;
-import com.binghui.binghuiliu.bakingtime.fragments.RecipeDetailFragment;
 import com.binghui.binghuiliu.bakingtime.fragments.RecipeListFragment;
 import com.binghui.binghuiliu.bakingtime.model.Recipe;
 
@@ -26,8 +22,7 @@ public class RecipeListActivity extends AppCompatActivity {
     @BindString(R.string.recipe_list_key)
     String recipe_list_key;
 
-    @Nullable
-    public RecipeIdlingResource idlingResource;
+    CountingIdlingResource espressoTestIdlingResource = new CountingIdlingResource("Network_Call");
 
     RecipeProvider recipeProvider;
     ArrayList<Recipe> recipeList;
@@ -38,9 +33,7 @@ public class RecipeListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_list);
         ButterKnife.bind(this);
 
-        if (idlingResource != null) {
-            idlingResource.setIdleState(false);
-        }
+        espressoTestIdlingResource.increment();
 
         if (savedInstanceState != null) {
             recipeList = savedInstanceState.getParcelableArrayList(recipe_list_key);
@@ -59,14 +52,14 @@ public class RecipeListActivity extends AppCompatActivity {
                     RecipeListFragment listFragment = (RecipeListFragment) getSupportFragmentManager().findFragmentById(R.id.list_recipe_fragment);
                     listFragment.setRecipeList(recipeList);
 
-                    if (idlingResource != null) {
-                        idlingResource.setIdleState(true);
-                    }
+                    espressoTestIdlingResource.decrement();
                 }
 
                 @Override
                 public void onFailure(Call<ArrayList<Recipe>> call, Throwable t) {
                     t.printStackTrace();
+
+                    espressoTestIdlingResource.decrement();
                 }
             });
         }
@@ -79,11 +72,7 @@ public class RecipeListActivity extends AppCompatActivity {
     }
 
     @VisibleForTesting
-    @NonNull
-    public IdlingResource getIdlingResource() {
-        if (idlingResource == null) {
-            idlingResource = new RecipeIdlingResource();
-        }
-        return idlingResource;
+    public CountingIdlingResource getEspressoIdlingResourceForMainActivity() {
+        return espressoTestIdlingResource;
     }
 }

@@ -4,10 +4,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
-import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,8 +15,6 @@ import android.view.ViewGroup;
 import com.binghui.binghuiliu.bakingtime.R;
 import com.binghui.binghuiliu.bakingtime.RecipeDetailActivity;
 import com.binghui.binghuiliu.bakingtime.adapters.RecipeAdapter;
-import com.binghui.binghuiliu.bakingtime.data.RecipeIdlingResource;
-import com.binghui.binghuiliu.bakingtime.data.RecipeProvider;
 import com.binghui.binghuiliu.bakingtime.model.Recipe;
 import com.binghui.binghuiliu.bakingtime.widget.RecipeAppWidgetProvider;
 
@@ -29,9 +24,6 @@ import butterknife.BindInt;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by binghuiliu on 25/09/2017.
