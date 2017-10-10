@@ -98,13 +98,23 @@ public class RecipeStepFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        releasePlayer();
+        super.onPause();
+    }
+
+    @Override
     public void onDestroy() {
+        releasePlayer(); // if the player is not released here instead of releasing in onPause, it won't be successfully released. try to rotate in a two-panel emulator and you'll see.
+        super.onDestroy();
+    }
+
+    private void releasePlayer() {
         if (player != null) {
             player.stop();
             player.release();
             player = null;
         }
-        super.onDestroy();
     }
 
     private void displayStep() {
@@ -126,8 +136,6 @@ public class RecipeStepFragment extends Fragment {
 
     private void initializePlayer(String url) {
         if (player == null) {
-            stepVideo.requestFocus();
-
             BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
             DataSource.Factory mediaDataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "mediaPlayerSample"), (TransferListener<? super DataSource>) bandwidthMeter);
 
