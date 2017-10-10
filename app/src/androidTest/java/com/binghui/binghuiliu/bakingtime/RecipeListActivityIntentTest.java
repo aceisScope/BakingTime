@@ -1,9 +1,13 @@
 package com.binghui.binghuiliu.bakingtime;
 
+import android.support.test.espresso.Espresso;
+import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,10 +31,25 @@ public class RecipeListActivityIntentTest {
     @Rule
     public IntentsTestRule<RecipeListActivity> intentsTestRule = new IntentsTestRule<>(RecipeListActivity.class);
 
+    private IdlingResource idlingResource;
+
+    @Before
+    public void registerIdlingResource() {
+        idlingResource = intentsTestRule.getActivity().getIdlingResource();
+        Espresso.registerIdlingResources(idlingResource);
+    }
+
     @Test
     public void clickOnRecipeListPutRecipeIndexToIntent() {
         onView(withId(R.id.recipe_recycler_view))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
         intended(hasExtra(recipe_index_key, position));
+    }
+
+    @After
+    public void unregisterIdlingResource() {
+        if (idlingResource != null) {
+            Espresso.unregisterIdlingResources(idlingResource);
+        }
     }
 }

@@ -32,13 +32,6 @@ public class RecipeDetailActivityTest {
     public ActivityTestRule<RecipeDetailActivity> mActivityRule =
             new ActivityTestRule<>(RecipeDetailActivity.class, true, false);
 
-    @Before
-    public void initRecipeService() {
-        Context targetContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        RecipeProvider recipeProvider = new RecipeProvider(targetContext);
-        recipeProvider.parseRecipeJsonFile();
-    }
-
     @Test
     public void someTest() {
         Context targetContext = InstrumentationRegistry.getInstrumentation()

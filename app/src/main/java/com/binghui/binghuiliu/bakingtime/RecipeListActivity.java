@@ -38,6 +38,10 @@ public class RecipeListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_list);
         ButterKnife.bind(this);
 
+        if (idlingResource != null) {
+            idlingResource.setIdleState(false);
+        }
+
         if (savedInstanceState != null) {
             recipeList = savedInstanceState.getParcelableArrayList(recipe_list_key);
             RecipeListFragment listFragment = (RecipeListFragment) getSupportFragmentManager().findFragmentById(R.id.list_recipe_fragment);
@@ -54,6 +58,10 @@ public class RecipeListActivity extends AppCompatActivity {
                     recipeList = response.body();
                     RecipeListFragment listFragment = (RecipeListFragment) getSupportFragmentManager().findFragmentById(R.id.list_recipe_fragment);
                     listFragment.setRecipeList(recipeList);
+
+                    if (idlingResource != null) {
+                        idlingResource.setIdleState(true);
+                    }
                 }
 
                 @Override
