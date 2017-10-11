@@ -122,8 +122,8 @@ public class RecipeStepFragment extends Fragment {
     }
 
     private void releasePlayer() {
-        playerPosition = player.getCurrentPosition();
         if (player != null) {
+            playerPosition = player.getCurrentPosition();
             player.stop();
             player.release();
             player = null;
