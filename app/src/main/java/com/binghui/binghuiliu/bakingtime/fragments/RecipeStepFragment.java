@@ -17,6 +17,7 @@ import com.binghui.binghuiliu.bakingtime.R;
 import com.binghui.binghuiliu.bakingtime.model.Recipe;
 import com.binghui.binghuiliu.bakingtime.model.Step;
 import com.binghui.binghuiliu.bakingtime.utility.GlideApp;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -66,6 +67,7 @@ public class RecipeStepFragment extends Fragment {
     private Step step;
 
     private SimpleExoPlayer player;
+    private long playerPosition = C.TIME_UNSET;
 
     public void setStep(Step newStep){
         this.step = newStep;
@@ -89,6 +91,10 @@ public class RecipeStepFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        if (savedInstanceState != null) {
+            playerPosition = savedInstanceState.getLong("video_position", C.TIME_UNSET);
+        }
+
         displayStep();
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !is_pad) {
@@ -109,7 +115,14 @@ public class RecipeStepFragment extends Fragment {
         super.onDestroy();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong("video_position", playerPosition);
+    }
+
     private void releasePlayer() {
+        playerPosition = player.getCurrentPosition();
         if (player != null) {
             player.stop();
             player.release();
@@ -152,6 +165,9 @@ public class RecipeStepFragment extends Fragment {
             MediaSource mediaSource = new ExtractorMediaSource(Uri.parse(url),
                     mediaDataSourceFactory, extractorsFactory, null, null);
 
+            if (playerPosition != C.TIME_UNSET) {
+                player.seekTo(playerPosition);
+            }
             player.prepare(mediaSource);
         }
     }
