@@ -37,7 +37,7 @@ import static android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE;
 public class RecipeProvider {
 
     public interface RecipeService {
-        @GET("android-baking-app-json")
+        @GET("topher/2017/May/59121517_baking/baking.json")
         Call<ArrayList<Recipe>> recipeList();
     }
 
@@ -52,7 +52,7 @@ public class RecipeProvider {
     public void fetchRecipeList(Callback<ArrayList<Recipe>> callback) {
         Gson gson = new GsonBuilder().create();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://go.udacity.com/")
+                .baseUrl("https://d17h27t6h515a5.cloudfront.net/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
