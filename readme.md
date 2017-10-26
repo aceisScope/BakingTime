@@ -12,7 +12,7 @@ This project is the second course Assignment from Udacity Android Nano Degree pr
 * [Glide](https://github.com/bumptech/glide)
 
 ## Screens
-![Android Pad](../screenshots/pad.png)
+![Android Pad](https://raw.githubusercontent.com/aceisScope/BakingTime/master/screenshots/pad.png)
 
 ## Project Overview
 You will productionize an app, taking it from a functional state to a production-ready state. This will involve finding and handling error cases, adding accessibility features, allowing for localization, adding a widget, and adding a library.
